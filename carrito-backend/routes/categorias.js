@@ -11,15 +11,14 @@ const conexion = require('../db');
 router.get('/', (req, res) => {
 
     conexion.query(
-        'SELECT * FROM productos',
+        'SELECT * FROM categorias',
         (err, resultados) => {
 
-            if (err) {
+            if(err){
                 return res.status(500).json(err);
             }
 
             res.json(resultados);
-
         }
     );
 
@@ -32,33 +31,18 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    const {
-        categoria_id,
-        nombre,
-        precio,
-        stock,
-        imagen
-    } = req.body;
+    const { nombre, descripcion } = req.body;
 
     conexion.query(
-        `INSERT INTO productos
-        (categoria_id, nombre, precio, stock, imagen)
-        VALUES (?, ?, ?, ?, ?)`,
-        [
-            categoria_id,
-            nombre,
-            precio,
-            stock,
-            imagen
-        ],
+        'INSERT INTO categorias(nombre, descripcion) VALUES (?, ?)',
+        [nombre, descripcion],
         (err, resultado) => {
 
-            if (err) {
+            if(err){
                 return res.status(500).json(err);
             }
 
             res.json(resultado);
-
         }
     );
 
@@ -71,38 +55,18 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
 
-    const {
-        categoria_id,
-        nombre,
-        precio,
-        stock,
-        imagen
-    } = req.body;
+    const { nombre, descripcion } = req.body;
 
     conexion.query(
-        `UPDATE productos
-         SET categoria_id=?,
-             nombre=?,
-             precio=?,
-             stock=?,
-             imagen=?
-         WHERE id=?`,
-        [
-            categoria_id,
-            nombre,
-            precio,
-            stock,
-            imagen,
-            req.params.id
-        ],
+        'UPDATE categorias SET nombre=?, descripcion=? WHERE id=?',
+        [nombre, descripcion, req.params.id],
         (err, resultado) => {
 
-            if (err) {
+            if(err){
                 return res.status(500).json(err);
             }
 
             res.json(resultado);
-
         }
     );
 
@@ -116,16 +80,15 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
 
     conexion.query(
-        'DELETE FROM productos WHERE id=?',
+        'DELETE FROM categorias WHERE id=?',
         [req.params.id],
         (err, resultado) => {
 
-            if (err) {
+            if(err){
                 return res.status(500).json(err);
             }
 
             res.json(resultado);
-
         }
     );
 

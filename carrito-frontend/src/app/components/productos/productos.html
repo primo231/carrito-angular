@@ -1,5 +1,99 @@
 <h2>Productos</h2>
 
-<p>Longitud: {{ productos.length }}</p>
+<div class="card p-3 mb-3">
 
-<pre>{{ productos | json }}</pre>
+  <input
+    class="form-control mb-2"
+    placeholder="Nombre"
+    [(ngModel)]="producto.nombre">
+
+  <input
+    type="number"
+    class="form-control mb-2"
+    placeholder="Precio"
+    [(ngModel)]="producto.precio">
+
+  <input
+    type="number"
+    class="form-control mb-2"
+    placeholder="Stock"
+    [(ngModel)]="producto.stock">
+
+  <input
+    class="form-control mb-2"
+    placeholder="Imagen"
+    [(ngModel)]="producto.imagen">
+
+  <button
+    *ngIf="!editando"
+    class="btn btn-success"
+    (click)="guardarProducto()">
+
+    Guardar
+
+  </button>
+
+  <button
+    *ngIf="editando"
+    class="btn btn-warning"
+    (click)="actualizarProducto()">
+
+    Actualizar
+
+  </button>
+
+</div>
+
+<table class="table table-bordered">
+
+  <thead>
+
+    <tr>
+
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Acciones</th>
+
+    </tr>
+
+  </thead>
+
+  <tbody>
+
+    <tr *ngFor="let producto of productos">
+
+      <td>{{ producto.id }}</td>
+
+      <td>{{ producto.nombre }}</td>
+
+      <td>{{ producto.precio }}</td>
+
+      <td>{{ producto.stock }}</td>
+
+      <td>
+
+        <button
+          class="btn btn-warning btn-sm me-2"
+          (click)="editar(producto)">
+
+          Editar
+
+        </button>
+
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="eliminar(producto.id)">
+
+          Eliminar
+
+        </button>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>

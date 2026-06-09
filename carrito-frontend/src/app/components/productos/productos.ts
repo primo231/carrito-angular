@@ -1,48 +1,160 @@
 import { Component, OnInit } from '@angular/core';
-import { Producto } from '../../models/producto';
-import { CarritoService } from '../../services/carrito';
-import { ProductoService } from '../../services/producto';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { ProductoService } from '../../services/producto';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './productos.html',
   styleUrl: './productos.css'
 })
 export class Productos implements OnInit {
 
-  productos: Producto[] = [];
+  productos: any[] = [];
+
+  producto = {
+    categoria_id: 1,
+    nombre: '',
+    precio: 0,
+    stock: 0,
+    imagen: ''
+  };
+
+  editando = false;
+  idEditar = 0;
 
   constructor(
-    private carritoService: CarritoService,
     private productoService: ProductoService
   ) {}
-ngOnInit(): void {
 
-  this.productoService
-    .obtenerProductos()
-    .subscribe({
-      next: datos => {
+  ngOnInit(): void {
+    this.cargarProductos();
+  }
 
-        console.log('DATOS RECIBIDOS:', datos);
+  cargarProductos() {
 
-        this.productos = [...datos];
+    this.productoService
+      .obtenerProductos()
+      .subscribe({
 
-        console.log('PRODUCTOS:', this.productos);
-        console.log('LONGITUD:', this.productos.length);
+        next: (datos: any[]) => {
+          this.productos = datos;
+        },
 
-      },
-      error: err => {
-        console.error(err);
-      }
-    });
+        error: (err: any) => {
+          console.error(err);
+        }
 
-}
+      });
 
-  agregar(producto: Producto) {
-    this.carritoService.agregar(producto);
+  }
+
+  guardarProducto() {
+
+    this.productoService
+      .agregarProducto(this.producto)
+      .subscribe({
+
+        next: () => {
+
+          this.limpiarFormulario();
+
+          this.cargarProductos();
+
+        },
+
+        error: (err: any) => {
+          console.error(err);
+        }
+
+      });
+
+  }
+
+  editar(producto: any) {
+
+    this.editando = true;
+
+    this.idEditar = producto.id;
+
+    this.producto = {
+      categoria_id: producto.categoria_id,
+      nombre: producto.nombre,
+      precio: producto.precio,
+      stock: producto.stock,
+      imagen: producto.imagen
+    };
+
+  }
+
+  actualizarProducto() {
+
+    this.productoService
+      .actualizarProducto(
+        this.idEditar,
+        this.producto
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.editando = false;
+
+          this.idEditar = 0;
+
+          this.limpiarFormulario();
+
+          this.cargarProductos();
+
+        },
+
+        error: (err: any) => {
+          console.error(err);
+        }
+
+      });
+
+  }
+
+  eliminar(id: number) {
+
+    if (!confirm('¿Eliminar producto?')) {
+      return;
+    }
+
+    this.productoService
+      .eliminarProducto(id)
+      .subscribe({
+
+        next: () => {
+
+          this.cargarProductos();
+
+        },
+
+        error: (err: any) => {
+          console.error(err);
+        }
+
+      });
+
+  }
+
+  limpiarFormulario() {
+
+    this.producto = {
+
+      categoria_id: 1,
+      nombre: '',
+      precio: 0,
+      stock: 0,
+      imagen: ''
+
+    };
+
   }
 
 }

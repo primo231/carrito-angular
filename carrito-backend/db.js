@@ -1,18 +1,21 @@
 const mysql = require('mysql2');
 
 const conexion = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'polifemo2009',
-  database: 'carrito_db'
+    host: 'localhost',
+    user: 'root',
+    password: 'polifemo2009',
+    database: 'tienda_online'
 });
 
-conexion.connect(error => {
-  if(error){
-    console.log(error);
-  } else {
+conexion.connect(err => {
+
+    if(err){
+        console.log(err);
+        return;
+    }
+
     console.log('MySQL conectado');
-  }
+
 });
 
 module.exports = conexion;
