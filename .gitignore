@@ -1,0 +1,12 @@
+node_modules/
+.angular/
+dist/
+coverage/
+
+.env
+
+carrito-frontend/node_modules/
+carrito-frontend/.angular/
+carrito-frontend/dist/
+
+carrito-backend/node_modules/

@@ -1,0 +1,35 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+
+    <span class="navbar-brand">
+      Carrito Angular
+    </span>
+
+    <div>
+
+      <a
+        routerLink="/"
+        class="btn btn-outline-light me-2">
+        Productos
+      </a>
+
+      <a
+        routerLink="/carrito"
+        class="btn btn-outline-light me-2">
+        Carrito
+      </a>
+
+      <a
+        routerLink="/historial"
+        class="btn btn-outline-light">
+        Historial
+      </a>
+
+    </div>
+
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <router-outlet></router-outlet>
+</div>
